@@ -1,5 +1,5 @@
 
-const dataFileName = "https://gist.githubusercontent.com/miguepiscy/2d431ec3bc101ef62ff8ddd0e476177f/raw/d9f3a11cfa08154c36623c1bf01537bb7b022491/practica.json"
+const dataFileName = "https://raw.githubusercontent.com/ignaciogallegossanchez/2019KeepcodingBDVisualD3/master/practica.json"
 
 const FEATURES    = "features"
 const PROPERTIES  = "properties"
