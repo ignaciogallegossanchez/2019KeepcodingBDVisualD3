@@ -1,0 +1,148 @@
+<!--
+    Data visualization with D3.js
+    Bootcamp Big Data (4) - 2019
+    Keepcoding
+
+    Ignacio Gallegos Sánchez
+-->
+<html>
+    <head>
+    </head>
+    <body>
+        <!-- 3rd Party Libs-->
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://unpkg.com/simple-statistics@7.0.2/dist/simple-statistics.min.js"></script>
+        <!-- Util functions to load and handle data -->
+        <script src="data.js"></script>
+        <!-- Functions to draw different types of visualizations-->
+        <script src="barchart.js"></script>
+        <script src="map.js"></script>
+        <script src="pointchart.js"></script>
+
+        <!-- Styles -->
+        <style>
+            body {
+                font-family: Lato, sans-serif;
+            }
+            p, ul {
+                margin-left: 80px;
+                margin-right: 80px;
+            }
+            div {
+                margin:auto;
+                text-align: center;
+            }
+            .d3graph svg {
+                text-align: center;
+                margin: 40px;
+                padding: 10px;
+                border-radius: 15px;
+                border: 3px solid rgb(148, 148, 148);
+            }
+            #title {
+                margin: auto;
+                text-align: center;
+                width: fit-content;
+                margin-top: 50px;
+                margin-bottom: 50px;
+            } 
+            #title h1 {
+                color: rgb(48, 48, 48);
+                font-size: 40px;
+                text-align: center;
+            }
+            #title h3 {
+                color: rgb(102, 102, 102);
+                text-align: right;
+            }
+            div.tooltip {
+                position: absolute;
+                text-align: center;
+                padding: .2rem;
+                background: #313639;
+                color: #f9f9f9;
+                border: 0px;
+                border-radius: 8px;
+                pointer-events: none;
+                font-size: .7rem;
+            }
+
+            .regLine{
+                stroke:#94d7ea;
+                stroke-width:2px;
+                opacity:0.7
+            }
+
+            .d3graph rect {
+                stroke:#000000;
+                stroke-width: 2px;
+                fill: rgb(51, 101, 148);
+                fill-opacity: .95;
+
+            }
+        </style>
+
+        <div id="title">
+            <h1>Práctica visualización datos D3.js</h1>
+            <h3>Ignacio Gallegos Sánchez</h3>
+        </div>
+
+        <p>
+            En la siguiente imagen se muestra la resolución de la parte del ejercicio "Crear una gráfica que 
+            dibuje una regresión lineal de alguna de las características con respecto al precio en un barrio".
+            En este caso se muestra:
+        </p>
+        <ul>
+            <li><strong>Eje X:</strong> Precio medio de un barrio (avgprice)</li>
+            <li><strong>Eje Y:</strong> Número total de propiedades en el barrio:</li>
+        </ul>
+        <p>
+            Al pasar el puntero del ratón por encima de cada punto se muestra un "tooltip" con el nombre del barrio.
+        </p>
+        <div id="pointchart" class="d3graph"></div>
+        <p>
+            A continuación se muestran las demás partes de la práctica:
+        </p>
+        <ul>
+            <li>Un mapa con los barrios de la ciudad de Madrid y pintarlos por colores según el precio medio del alquiler en el barrio</li>
+            <li>Crear un gráfico de barras que en el eje Y tenga el número de propiedades y en el eje X el número de habitaciones de un barrio</li>
+            <li>Hacer que el valor de las gráficas (en este caso la gráfica de barras que es la única dependiente del barrio seleccionado) cambie con
+                 los barrios del mapa. En este caso en vez de tener que hacer click he implementado lo mismo con un on-hover</li>
+        </ul>
+        <div id="colormap" class="d3graph"></div>
+        <div id="barchart" class="d3graph"></div>
+
+
+        <!-- Script inicialization -->
+        <script>
+            var dataPromise = loadData()
+            dataPromise.then(data => {
+
+                // Scatter Chart
+                drawPointChar(
+                    avgPriceVsTotalProperties(data),
+                    "#pointchart",
+                    "Precio Medio VS Nº propiedades",
+                    "Precio",
+                    "Nº Propiedades",
+                    800,
+                    500)
+
+                // Map
+                drawMapColorByPrice(
+                    filterEmptyNeighbour(data), 
+                    "#colormap",
+                    800,
+                    500) 
+
+                // Bar chart
+                drawBarChart(
+                    avgbedroomsToArrayByName(data, "Palacio"),
+                    "#barchart",
+                    "Palacio",
+                    "Nº habitaciones",
+                    "Nº propiedades")
+            })
+        </script>
+    </body>
+</html>
